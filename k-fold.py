@@ -10,10 +10,7 @@ training_data = pd.read_csv(sys.argv[2], sep=' ')
 
 data = pd.concat([test_data, training_data]).reset_index(drop=True)
 
-# shuffle the dataframe
-data = data.sample(frac=1)
-
-# split the data in to 5 equal parts
+# split the data in to 5 equal parts using random sampling
 remainder = data.copy()
 data_split = []
 for x in range(5):
@@ -22,7 +19,7 @@ for x in range(5):
     data_split.append(df.copy())
 print('')
 print('k-fold -----------------------')
-#do the k fold
+# do the k fold
 total = 0
 for x in range(5):
     df_test = data_split[x]
@@ -33,5 +30,4 @@ for x in range(5):
     total += proportion[0]
 
 print('')
-print('average: '+str(total/5))
-
+print('average: ' + str(total / 5))

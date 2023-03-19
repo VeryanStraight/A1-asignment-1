@@ -50,8 +50,9 @@ def make_prediction(row, X, y, r, k):
     return row
 
 
-# use pandas to read in data
-test_data = pd.read_csv(sys.argv[1], sep=' ')
-training_data = pd.read_csv(sys.argv[2], sep=' ')
+if __name__ == "__main__":
+    # use pandas to read in data
+    test_data = pd.read_csv(sys.argv[1], sep=' ')
+    training_data = pd.read_csv(sys.argv[2], sep=' ')
 
-knn(test_data, training_data, 3, True)
+    knn(test_data, training_data, 3, True)
