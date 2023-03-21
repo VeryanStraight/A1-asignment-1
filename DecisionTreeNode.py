@@ -15,9 +15,17 @@ class DecisionTreeNode:
         return 'Node:' + str(self.attribute) + \
                '\n\t' + self.left_child.__str__() + '\n\t' + self.right_child.__str__()
 
-    def print_node(self, indent):
+    def print_node(self, depth):
+        indent = ''
+        for i in range(depth):
+            indent += "  "
+
+        s = ''
+        for i in range(depth-1):
+            s += "  "
+
         if self.left_child is None:
             return 'Class: ' + str(self.name) + ' prob: ' + str(self.probability) + '\n'
-        #remove las one indent for false child
-        return str(self.attribute) + '=True: \n' + indent + self.left_child.print_node(indent + "  ") + \
-               indent + str(self.attribute) + '=False: \n' + indent + self.right_child.print_node(indent + "  ")
+        # remove last one indent for false child
+        return str(self.attribute) + '=True: \n' + indent + self.left_child.print_node(depth+1) + \
+               s + str(self.attribute) + '=False: \n' + indent + self.right_child.print_node(depth+1)

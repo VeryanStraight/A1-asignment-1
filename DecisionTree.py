@@ -4,23 +4,22 @@ from DecisionTreeNode import DecisionTreeNode as Node
 from random import randint
 
 
-def type_and_probability(instances):
+def type_and_probability(instances):  # assumes only two possible types
     proportions = instances['Class'].value_counts(normalize=True)
-    if 'live' not in proportions.index:
-        return 'die', 1
-    elif 'die' not in proportions.index:
-        return 'live', 1
 
-    if proportions['live'] < proportions['die']:
-        return 'die', proportions['die']
-    elif proportions['live'] > proportions['die']:
-        return 'live', proportions['live']
+    if proportions.size < 2:
+        return 1
+
+    if proportions[0] < proportions[1]:
+        return proportions.index[1], proportions[1]
+    elif proportions[0] > proportions[1]:
+        return proportions.index[0], proportions[0]
     else:
         i = randint(0, 1)
         if i == 0:
-            return 'die', proportions['die']
+            return proportions.index[1], proportions[1]
         else:
-            return 'live', proportions['live']
+            return proportions.index[0], proportions[0]
 
 
 def purity(instances):  # assumes only two possible types
@@ -40,11 +39,8 @@ def build_tree(attributes, instances):
         name, probability = type_and_probability(training_data)
         return Node(name=name, probability=probability, size=0)
 
-    p = purity(instances)
-    if p == 0:
+    if purity(instances) == 0:
         name = instances['Class'].reset_index(drop=True)[0]
-        temp = len(instances.index)
-        node = Node(name=name, probability=1, size=len(instances.index))
         return Node(name=name, probability=1, size=len(instances.index))
     elif attributes.size == 0:
         name, probability = type_and_probability(instances)
@@ -93,7 +89,7 @@ attributes = attributes.drop('Class')
 
 node = build_tree(attributes, training_data)
 
-print(node.print_node('  '))  # need to fix this
+print(node.print_node(1))
 
 test_data['prediction'] = None
 test_data = test_data.apply(lambda row: make_prediction(row, node), axis=1)
