@@ -48,8 +48,8 @@ data = pd.read_csv(sys.argv[1], sep=' ')
 
 weights = pd.Series(data=0, index=data.columns)
 weights.drop(['class'], inplace=True)
-weights['0'] = 0
-data['0'] = 1
+weights['b'] = 0
+data['b'] = 1
 
 flag = True
 count = 0
@@ -82,13 +82,12 @@ data['predicted'] = None
 predictions = data.apply(classify, axis=1)
 
 print("number of iterations " + str(iterations))
-print("number correct "+str(best_percent*len(data.index)))
+print("number of correct classes "+str(best_percent*len(data.index)))
 print('proportion correct '+str(best_percent))
 print("weights:")
 print(best_weights)
-print("predictions:")
 
-predictions.drop(['0'])
+predictions.drop('b', inplace=True, axis=1)
 predictions.to_excel('perceptron output.xlsx')
 
 
